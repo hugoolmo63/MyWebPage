@@ -19,9 +19,9 @@ button { font: inherit; }
 .header-socials { @apply flex items-center gap-4; }
 .header-socials a { @apply text-white transition-opacity hover:opacity-60; }
 
-.horizontal-scroller { @apply flex h-full w-full snap-x snap-proximity overflow-x-auto overflow-y-hidden; scrollbar-width: none; overscroll-behavior: none; scroll-behavior: smooth; }
+.horizontal-scroller { @apply flex h-full w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden; scrollbar-width: none; overscroll-behavior: none; scroll-behavior: smooth; }
 .horizontal-scroller::-webkit-scrollbar { display: none; }
-.horizontal-section { @apply relative min-w-full shrink-0 snap-start; }
+.horizontal-section { @apply relative min-w-full shrink-0 snap-start; scroll-snap-stop: always; }
 .home-section { @apply flex items-center justify-center px-5 pt-10 sm:px-12; }
 .home-content { @apply relative flex w-full max-w-[1300px] flex-col items-center justify-center; }
 .section-kicker { @apply m-0 font-mono text-[10px] font-medium uppercase tracking-[.16em] text-white/75; }
@@ -37,7 +37,7 @@ button { font: inherit; }
 .section-heading { @apply flex shrink-0 items-start justify-between gap-8; }
 .section-heading h2 { @apply mt-5 text-4xl font-extrabold leading-[.9] tracking-[-.065em] text-white sm:text-6xl lg:text-7xl; }
 .section-heading h2 em { @apply font-serif font-normal tracking-[-.08em]; }
-.projects-section { @apply bg-[#74c98f]; }
+.projects-section { @apply bg-[#74c98f] overflow-y-auto; }
 .projects-grid { @apply mx-auto mt-10 grid w-full max-w-[1120px] grid-cols-1 gap-4 sm:grid-cols-3; }
 .project-card { @apply flex min-h-[280px] flex-col rounded-3xl bg-white p-6 text-[#244c4d] shadow-lg shadow-[#268a8b]/20 transition-transform hover:-translate-y-2 lg:p-7; }
 .card-topline { @apply flex justify-between font-mono text-[9px] uppercase tracking-[.14em] text-[#4ebdbe]; }
@@ -68,11 +68,11 @@ button { font: inherit; }
 .page-marker.active span { @apply border-white bg-white font-bold text-[#4ebdbe]; }
 .scroll-hint { @apply pointer-events-none fixed bottom-6 left-1/2 z-20 -translate-x-1/2 font-mono text-[9px] tracking-[.15em] text-white/60; }
 .scroll-hint span { @apply mx-2 text-white; }
-.modal-backdrop { @apply fixed inset-0 z-50 grid place-items-center bg-[#173c3d]/40 p-5 backdrop-blur-sm; }
-.detail-modal { @apply relative w-full max-w-lg rounded-3xl bg-white p-7 text-[#244c4d] shadow-2xl sm:p-10; }
+.modal-backdrop { @apply fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[#173c3d]/40 p-5 backdrop-blur-sm; }
+.detail-modal { @apply relative max-h-[calc(100vh-2.5rem)] w-full max-w-lg overflow-y-auto rounded-3xl bg-white p-7 text-[#244c4d] shadow-2xl sm:p-10; }
 .modal-close { @apply absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full bg-[#e4f4f1] text-[#397273] transition-colors hover:bg-[#4ebdbe] hover:text-white; }
 .detail-modal h2 { @apply mt-5 pr-8 text-4xl font-extrabold leading-none tracking-[-.06em]; }
-.modal-copy { @apply mt-5 max-w-md text-sm leading-7 text-[#6f8888]; }
+.modal-copy { @apply mt-5 min-h-28 max-w-md whitespace-pre-line text-sm leading-7 text-[#6f8888]; }
 .modal-actions { @apply mt-8 flex items-center gap-5; }
 .modal-actions a { @apply inline-flex items-center gap-2 rounded-full bg-[#4ebdbe] px-4 py-3 text-xs font-bold text-white transition-transform hover:scale-105; }
 .modal-actions button { @apply text-xs font-bold text-[#397273] underline underline-offset-4; }

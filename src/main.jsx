@@ -149,7 +149,7 @@ function DetailModal({ item, type, onClose }) {
         <button className="modal-close" onClick={onClose} aria-label="Close"><X size={18} /></button>
         <p className="section-kicker">{isProject ? `/ ${item.category}` : `${item.date} / ${item.category}`}</p>
         <h2>{item.title}</h2>
-        <p className="modal-copy">{isProject ? item.description : 'A short note about the process, decisions, and ideas behind this topic.'}</p>
+        <p className="modal-copy">{isProject ? item.fullDescription : 'A short note about the process, decisions, and ideas behind this topic.'}</p>
         {isProject && <div className="tag-list">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>}
         <div className="modal-actions">
           {isProject && <a href={item.link} target="_blank" rel="noreferrer">Open project <ArrowUpRight size={15} /></a>}
@@ -163,7 +163,6 @@ function DetailModal({ item, type, onClose }) {
 function App() {
   const scrollerRef = useRef(null)
   const activeSectionRef = useRef(0)
-  const wheelAccumulatorRef = useRef(0)
   const touchStartRef = useRef(null)
   const [activeSection, setActiveSection] = useState(0)
   const [selectedItem, setSelectedItem] = useState(null)
@@ -190,21 +189,6 @@ function App() {
   useEffect(() => {
     const scroller = scrollerRef.current
     if (!scroller) return undefined
-    let wheelResetTimer
-    const onWheel = (event) => {
-      if (event.target instanceof Element && event.target.closest('.modal-backdrop')) return
-      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX
-      if (!delta) return
-      event.preventDefault()
-      wheelAccumulatorRef.current += delta
-      clearTimeout(wheelResetTimer)
-      wheelResetTimer = window.setTimeout(() => { wheelAccumulatorRef.current = 0 }, 180)
-      if (Math.abs(wheelAccumulatorRef.current) < 100) return
-      const direction = wheelAccumulatorRef.current > 0 ? 1 : -1
-      wheelAccumulatorRef.current = 0
-      const nextIndex = Math.min(sections.length - 1, Math.max(0, activeSectionRef.current + direction))
-      if (nextIndex !== activeSectionRef.current) goToSection(nextIndex)
-    }
     const onScroll = () => {
       const index = Math.min(sections.length - 1, Math.max(0, Math.round(scroller.scrollLeft / scroller.clientWidth)))
       activeSectionRef.current = index
@@ -225,13 +209,10 @@ function App() {
       const nextIndex = Math.min(sections.length - 1, Math.max(0, activeSectionRef.current + direction))
       if (nextIndex !== activeSectionRef.current) goToSection(nextIndex)
     }
-    window.addEventListener('wheel', onWheel, { capture: true, passive: false })
     scroller.addEventListener('scroll', onScroll, { passive: true })
     scroller.addEventListener('touchstart', onTouchStart, { passive: true })
     scroller.addEventListener('touchend', onTouchEnd, { passive: true })
     return () => {
-      clearTimeout(wheelResetTimer)
-      window.removeEventListener('wheel', onWheel, true)
       scroller.removeEventListener('scroll', onScroll)
       scroller.removeEventListener('touchstart', onTouchStart)
       scroller.removeEventListener('touchend', onTouchEnd)
@@ -246,7 +227,7 @@ function App() {
         <BlogSection onOpen={openDetail} />
       </main>
       <PageNavigator activeSection={activeSection} onNavigate={goToSection} />
-      <div className="scroll-hint">C 2026 <span>/</span> V 1.0</div>
+      <div className="scroll-hint">© 2026 <span>/</span> V 1.0</div>
       <DetailModal item={selectedItem} type={selectedType} onClose={() => setSelectedItem(null)} />
     </div>
   )
